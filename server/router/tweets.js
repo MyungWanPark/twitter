@@ -52,6 +52,7 @@ router.post('/', (req, res, next) => {
     id: Date.now().toString(),
     text,
     name,
+    createAt: new Date(),
     username,
     url,
   };
