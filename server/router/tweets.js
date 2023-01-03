@@ -1,24 +1,6 @@
 import express from 'express';
 import 'express-async-errors';
-
-let tweets = [
-  {
-    id: '1',
-    text: 'first text hello!',
-    createAt: Date.now().toString(),
-    name: 'park-myungwan',
-    username: 'beaver',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
-  },
-  {
-    id: '2',
-    text: 'second text world!',
-    createAt: Date.now().toString(),
-    name: 'park-Sobae',
-    username: 'sister',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
-  },
-];
+import * as tweetRespository from '../data/tweetRepository.js';
 // GET /tweets
 // GET /tweets?username=username
 // GET /tweets/:id
@@ -31,14 +13,15 @@ const router = express.Router();
 router.get('/', (req, res, next) => {
   const username = req.query.username;
   const data = username
-    ? tweets.find((tweet) => tweet.username === username)
-    : tweets;
+    ? tweetRespository.getByUsername()
+    : tweetRespository.getAll();
   res.status(200).json(data);
 });
 
 router.get('/:id', (req, res, next) => {
   const id = req.params.id;
-  const tweet = tweets.find((tweet) => tweet.id === id);
+  const tweet = tweetRespository.getById(id);
+
   if (tweet) {
     res.status(200).json(tweet);
   } else {
@@ -48,15 +31,7 @@ router.get('/:id', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   const { text, name, username, url } = req.body;
-  const tweet = {
-    id: Date.now().toString(),
-    text,
-    name,
-    createAt: new Date(),
-    username,
-    url,
-  };
-  tweets = [tweet, ...tweets];
+  const tweet = tweetRespository.create();
   res.status(201).json(tweet);
 });
 
@@ -64,18 +39,18 @@ router.put('/:id', (req, res, next) => {
   const id = req.params.id;
   const { text } = req.body;
 
-  let tweet = tweets.find((tweet) => tweet.id === id);
+  let tweet = tweetRespository.updateById(id, text);
   if (tweet) {
-    tweet.text = text;
+    res.status(200).json(tweet);
   } else {
     res.status(404).json({ message: `tweet(${id}) not found!` });
   }
-  res.status(200).json(tweet);
 });
 
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id;
-  tweets = tweets.filter((tweet) => tweet.id !== id);
+  tweetRespository.removeById(id);
   res.sendStatus(204);
 });
+
 export default router;
