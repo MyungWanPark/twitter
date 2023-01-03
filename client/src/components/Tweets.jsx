@@ -14,7 +14,10 @@ const Tweets = memo(({ tweetService, username, addable }) => {
   useEffect(() => {
     tweetService
       .getTweets(username)
-      .then((tweets) => setTweets([...tweets]))
+      .then((tweets) => {
+        console.log(tweets);
+        setTweets([...tweets]);
+      })
       .catch(onError);
   }, [tweetService, username, user]);
 
@@ -59,8 +62,8 @@ const Tweets = memo(({ tweetService, username, addable }) => {
         />
       )}
       {error && <Banner text={error} isAlert={true} transient={true} />}
-      {tweets.length === 0 && <p className='tweets-empty'>No Tweets Yet</p>}
-      <ul className='tweets'>
+      {tweets.length === 0 && <p className="tweets-empty">No Tweets Yet</p>}
+      <ul className="tweets">
         {tweets.map((tweet) => (
           <TweetCard
             key={tweet.id}
