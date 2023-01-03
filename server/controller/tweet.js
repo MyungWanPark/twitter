@@ -1,16 +1,16 @@
 import * as tweetRespository from '../data/tweetRepository.js';
 
-export function getTweets(req, res, next) {
+export async function getTweets(req, res, next) {
   const username = req.query.username;
-  const data = username
+  const data = await (username
     ? tweetRespository.getByUsername()
-    : tweetRespository.getAll();
+    : tweetRespository.getAll());
   res.status(200).json(data);
 }
 
-export function getTweetById(req, res, next) {
+export async function getTweetById(req, res, next) {
   const id = req.params.id;
-  const tweet = tweetRespository.getById(id);
+  const tweet = await tweetRespository.getById(id);
 
   if (tweet) {
     res.status(200).json(tweet);
@@ -19,17 +19,17 @@ export function getTweetById(req, res, next) {
   }
 }
 
-export function createTweet(req, res, next) {
+export async function createTweet(req, res, next) {
   const { text, name, username, url } = req.body;
-  const tweet = tweetRespository.create();
+  const tweet = await tweetRespository.create();
   res.status(201).json(tweet);
 }
 
-export function updateTweetById(req, res, next) {
+export async function updateTweetById(req, res, next) {
   const id = req.params.id;
   const { text } = req.body;
 
-  let tweet = tweetRespository.updateById(id, text);
+  let tweet = await tweetRespository.updateById(id, text);
   if (tweet) {
     res.status(200).json(tweet);
   } else {
@@ -37,8 +37,8 @@ export function updateTweetById(req, res, next) {
   }
 }
 
-export function deleteTweetById(req, res, next) {
+export async function deleteTweetById(req, res, next) {
   const id = req.params.id;
-  tweetRespository.removeById(id);
+  await tweetRespository.removeById(id);
   res.sendStatus(204);
 }
