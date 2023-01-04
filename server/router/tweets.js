@@ -2,6 +2,7 @@ import express from 'express';
 import 'express-async-errors';
 import { body } from 'express-validator';
 import * as tweetController from '../controller/tweet.js';
+import { isAuth } from '../middleware/auth.js';
 import { validate } from '../middleware/validator.js';
 
 // GET /tweets
@@ -20,14 +21,14 @@ const validateTweet = [
 
 const router = express.Router();
 
-router.get('/', tweetController.getTweets);
+router.get('/', isAuth, tweetController.getTweets);
 
-router.get('/:id', tweetController.getTweetById);
+router.get('/:id', isAuth, tweetController.getTweetById);
 
-router.post('/', validateTweet, tweetController.createTweet);
+router.post('/', isAuth, validateTweet, tweetController.createTweet);
 
-router.put('/:id', validateTweet, tweetController.updateTweetById);
+router.put('/:id', isAuth, validateTweet, tweetController.updateTweetById);
 
-router.delete('/:id', tweetController.deleteTweetById);
+router.delete('/:id', isAuth, tweetController.deleteTweetById);
 
 export default router;
