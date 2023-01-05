@@ -2,7 +2,7 @@ let users = [
   {
     id: '1',
     username: 'beaver',
-    password: '1234',
+    password: '$2b$10$wLBMhVSBjxUJrNEZaLCin.zy4SO4D7Jpy/QPwrlz4DlWm9/stJXiS', //1234
     name: 'park-myungwan',
     email: 'beaver@naver.com',
     url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
@@ -26,7 +26,7 @@ export async function findById(id) {
 }
 
 export async function createUser(user) {
-  const newUser = { ...user, id: Date.now().toString() };
+  const newUser = { ...user, id: new Date().toString() };
   users.push(newUser);
 
   return newUser.id;

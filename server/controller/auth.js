@@ -28,14 +28,16 @@ export async function login(req, res) {
   const { username, password } = req.body;
   const user = await userRepository.findByUsername(username);
   if (!user) {
-    res.status(401).json({ message: 'Invalid user or password' });
+    return res.status(401).json({ message: 'Invalid user' });
   }
+
   const isValidPassword = await bcrypt.compare(password, user.password);
+
   if (!isValidPassword) {
-    res.status(401).json({ message: 'invalid user or password' });
+    return res.status(401).json({ message: 'invalid password' });
   }
   const token = createJWTToken(user.id);
-  res.status(200).json({ token, username });
+  return res.status(200).json({ token, username });
 }
 
 function createJWTToken(id) {

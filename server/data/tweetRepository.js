@@ -1,45 +1,57 @@
+import * as userRepository from './userRepository.js';
+
 let tweets = [
   {
     id: '1',
     text: 'first text hello!',
-    createAt: Date.now().toString(),
-    name: 'park-myungwan',
-    username: 'beaver',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
+    createAt: new Date().toString(),
+    userId: '1',
   },
   {
     id: '2',
     text: 'second text world!',
-    createAt: Date.now().toString(),
-    name: 'park-Sobae',
-    username: 'sister',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
+    createAt: new Date().toString(),
+    userId: '2',
   },
 ];
 
-export async function getByUsername(username) {
-  return tweets.find((tweet) => tweet.username === username);
+export async function getAll() {
+  return Promise.all(
+    tweets.map(async (tweet) => {
+      const { username, name, url } = await userRepository.findById(
+        tweet.userId
+      );
+      return { ...tweet, username, name, url };
+    })
+  );
 }
 
-export async function getAll() {
-  return tweets;
+export async function getByUsername(username) {
+  return getAll().then((tweets) =>
+    tweets.filter((tweet) => tweet.username === username)
+  );
 }
 
 export async function getById(id) {
-  return tweets.find((tweet) => tweet.id === id);
+  const foundTweet = tweets.find((tweet) => tweet.id === id);
+  if (!foundTweet) {
+    return null;
+  }
+  const { username, name, url } = await userRepository.findById(
+    foundTweet.userId
+  );
+  return { ...foundTweet, username, name, url };
 }
 
-export async function create(text, name, username, url) {
+export async function create(text, userId) {
   const tweet = {
-    id: Date.now().toString(),
+    id: new Date().toString(),
     text,
-    name,
     createAt: new Date(),
-    username,
-    url,
+    userId,
   };
   tweets = [tweet, ...tweets];
-  return tweet;
+  return getById(tweet.id);
 }
 
 export async function updateById(id, text) {
@@ -47,7 +59,7 @@ export async function updateById(id, text) {
   if (tweet) {
     tweet.text = text;
   }
-  return tweet;
+  return getById(tweet.id);
 }
 
 export async function removeById(id) {
