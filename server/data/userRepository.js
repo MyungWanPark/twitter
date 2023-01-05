@@ -5,7 +5,7 @@ let users = [
     password: '$2b$10$wLBMhVSBjxUJrNEZaLCin.zy4SO4D7Jpy/QPwrlz4DlWm9/stJXiS', //1234
     name: 'park-myungwan',
     email: 'beaver@naver.com',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
+    url: 'https://cdn.pixabay.com/photo/2022/12/20/11/17/hiking-7667621_1280.jpg',
   },
   {
     id: '2',
@@ -13,7 +13,7 @@ let users = [
     password: '5678',
     name: 'park-Sobae',
     email: 'sister@gmail.com',
-    url: 'https://cdn.expcloud.co/life/uploads/2020/04/27135731/Fee-gentry-hed-shot-1.jpg',
+    url: 'https://cdn.pixabay.com/photo/2022/12/20/11/17/hiking-7667621_1280.jpg',
   },
 ];
 

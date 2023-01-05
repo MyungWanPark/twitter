@@ -15,7 +15,6 @@ const Tweets = memo(({ tweetService, username, addable }) => {
     tweetService
       .getTweets(username)
       .then((tweets) => {
-        console.log(tweets);
         setTweets([...tweets]);
       })
       .catch(onError);

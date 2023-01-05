@@ -5,16 +5,15 @@ export default class HttpClient {
   async fetch(url, options) {
     const res = await fetch(`${this.baseURL}${url}`, {
       ...options,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...options.headers },
     });
     let data;
-
     try {
       data = await res.json();
     } catch (error) {
       console.error(error);
     }
-    console.log('data = ', data);
+
     if (res.status > 299 || res.status < 200) {
       const message =
         data && data.message ? data.message : 'something went wrong!!!';
