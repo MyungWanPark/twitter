@@ -10,7 +10,7 @@ let users = [
   {
     id: '2',
     username: 'coffee',
-    password: '5678',
+    password: '$2b$10$wLBMhVSBjxUJrNEZaLCin.zy4SO4D7Jpy/QPwrlz4DlWm9/stJXiS', //1234
     name: 'park-Sobae',
     email: 'sister@gmail.com',
     url: 'https://cdn.pixabay.com/photo/2022/12/20/11/17/hiking-7667621_1280.jpg',
