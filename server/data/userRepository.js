@@ -1,33 +1,25 @@
-let users = [
-  {
-    id: '1',
-    username: 'beaver',
-    password: '$2b$10$wLBMhVSBjxUJrNEZaLCin.zy4SO4D7Jpy/QPwrlz4DlWm9/stJXiS', //1234
-    name: 'park-myungwan',
-    email: 'beaver@naver.com',
-    url: 'https://cdn.pixabay.com/photo/2022/12/20/11/17/hiking-7667621_1280.jpg',
-  },
-  {
-    id: '2',
-    username: 'coffee',
-    password: '$2b$10$wLBMhVSBjxUJrNEZaLCin.zy4SO4D7Jpy/QPwrlz4DlWm9/stJXiS', //1234
-    name: 'park-Sobae',
-    email: 'sister@gmail.com',
-    url: 'https://cdn.pixabay.com/photo/2022/12/20/11/17/hiking-7667621_1280.jpg',
-  },
-];
+import { db } from '../db/database.js';
 
 export async function findByUsername(username) {
-  return users.find((user) => user.username === username);
+  return db
+    .execute('SELECT * FROM users WHERE username=?', [username])
+    .then((result) => result[0][0]);
 }
 
 export async function findById(id) {
-  return users.find((user) => user.id === id);
+  return db
+    .execute('SELECT * FROM users WHERE id=?', [id])
+    .then((result) => result[0][0]);
 }
 
 export async function createUser(user) {
-  const newUser = { ...user, id: new Date().toString() };
-  users.push(newUser);
-
-  return newUser.id;
+  const { username, password, name, email, url } = user;
+  return db
+    .execute(
+      'INSERT INTO users (username, password, name, email, url) VALUES (?,?,?,?,?)',
+      [username, password, name, email, url]
+    )
+    .then((result) => {
+      return result[0].insertId;
+    });
 }
