@@ -6,9 +6,8 @@ import morgan from 'morgan';
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 import { config } from './config.js';
-import { Server } from 'socket.io';
 import { initSocket } from './connection/socket.js';
-import { db, sequelize } from './db/database.js';
+import { sequelize } from './db/database.js';
 
 const app = express();
 
@@ -35,5 +34,3 @@ sequelize.sync().then((client) => {
   );
   initSocket(server);
 });
-
-// db.getConnection().then(() => console.log('✔️  db-connected'));

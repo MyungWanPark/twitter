@@ -35,8 +35,7 @@ export async function updateTweetById(req, res) {
   if (!tweet) {
     return res.status(404).json({ message: `Tweet not found id(${id})` });
   }
-  console.log(`tweet = ${JSON.stringify(tweet)}`);
-  console.log(`tweet.userId = ${tweet.userId}, req.userId = ${req.userId}`);
+
   if (tweet.userId !== req.userId) {
     return res.sendStatus(403);
   }
@@ -54,6 +53,6 @@ export async function deleteTweetById(req, res) {
   if (tweet.userId !== req.userId) {
     return res.sendStatus(403);
   }
-  await tweetRespository.removeById(id);
-  res.sendStatus(204);
+  const deletedTweet = await tweetRespository.removeById(id);
+  res.status(200).json(deletedTweet);
 }
