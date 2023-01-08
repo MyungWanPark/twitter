@@ -8,7 +8,7 @@ import authRouter from './router/auth.js';
 import { config } from './config.js';
 import { Server } from 'socket.io';
 import { initSocket } from './connection/socket.js';
-import { db } from './db/database.js';
+import { db, sequelize } from './db/database.js';
 
 const app = express();
 
@@ -27,8 +27,13 @@ app.use((error, req, res, next) => {
   console.error(error);
   res.sendStatus(500);
 });
-db.getConnection().then(() => console.log('✔️  db-connected'));
-const server = app.listen(config.host.port, () =>
-  console.log('✅ node-express connected')
-);
-initSocket(server);
+
+sequelize.sync().then((client) => {
+  console.log('✔️  db-connected');
+  const server = app.listen(config.host.port, () =>
+    console.log('✅ node-express connected')
+  );
+  initSocket(server);
+});
+
+// db.getConnection().then(() => console.log('✔️  db-connected'));
