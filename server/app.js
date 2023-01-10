@@ -33,7 +33,7 @@ app.use((error, req, res, next) => {
 
 sequelize.sync().then((client) => {
   console.log('✔️  db-connected');
-  const server = app.listen(config.host.port, () =>
+  const server = app.listen(config.port, () =>
     console.log(`✅ node-express connected in ${new Date()}`)
   );
   initSocket(server);
